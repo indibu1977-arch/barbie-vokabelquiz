@@ -6,10 +6,11 @@
 <title>Barbie Vokabel-Quiz</title>
 <style>
 body{margin:0;font-family:Trebuchet MS,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#fff0f6,#ffd6ea);color:#4a1942;min-height:100vh}
-.wrap{max-width:720px;margin:0 auto;padding:20px}
-h1{color:#e0218a;text-align:center;margin:8px 0}
-.sub{text-align:center;color:#8e24aa;font-style:italic;margin-top:0}
-.card{background:#fff;border:2px solid #ffd0e4;border-radius:22px;padding:22px;box-shadow:0 10px 24px rgba(224,33,138,.15)}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+h1{color:#e0218a;text-align:center;margin:10px 0 4px}
+.sub{text-align:center;color:#8e24aa;font-style:italic;margin:0 0 14px}
+.banner{width:100%;max-height:170px;object-fit:cover;object-position:center 40%;border-radius:18px;border:3px solid #fff;box-shadow:0 8px 20px rgba(224,33,138,.2);display:block}
+.card{background:#fff;border:2px solid #ffd0e4;border-radius:22px;padding:20px;box-shadow:0 10px 24px rgba(224,33,138,.15)}
 .start{text-align:center}
 input{font:inherit;font-size:1.1rem;padding:10px 14px;border:2px solid #ffd0e4;border-radius:12px;text-align:center;width:min(280px,90%)}
 button{font:inherit;cursor:pointer}
@@ -21,19 +22,16 @@ button{font:inherit;cursor:pointer}
 .bar{height:14px;background:#fce4ec;border-radius:99px;overflow:hidden;flex:1}
 .bar>span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7eb3,#e0218a)}
 .progress{display:flex;gap:10px;align-items:center;font-weight:700;color:#ad1457;margin-bottom:12px}
-.overlay{position:fixed;inset:0;background:rgba(74,25,66,.45);display:none;align-items:center;justify-content:center;padding:16px}
+.overlay{position:fixed;inset:0;background:rgba(74,25,66,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
 .overlay.show{display:flex}
-.modal{background:#fff;border-radius:22px;padding:18px;width:min(420px,100%);text-align:center}
-.art{height:180px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:64px;margin-bottom:8px}
-.a1{background:linear-gradient(#ff9ec8,#ffd6ea)}
-.a2{background:linear-gradient(#e0b3ff,#ffd6ea)}
-.a3{background:linear-gradient(#ffd36a,#ffe9b3)}
-.a4{background:linear-gradient(#ff7eb3,#f6c343)}
-.a5{background:linear-gradient(#ffe0a3,#fff3cd)}
+.modal{background:#fff;border-radius:22px;padding:16px;width:min(420px,100%);text-align:center;box-shadow:0 16px 40px rgba(0,0,0,.25)}
+.modal img{width:100%;max-height:250px;object-fit:cover;border-radius:14px;background:#fce4ec}
+.cert{width:100%;border-radius:12px;display:block}
 </style>
 </head>
 <body>
 <div class="wrap">
+<img class="banner" src="https://i.img402.dev/hxdky7pmrj.jpg" alt="Freundinnen vor dem Traumhaus">
 <h1>Barbie Vokabel-Quiz</h1>
 <p class="sub">Mode, Freundschaft und das Traumhaus</p>
 <section id="start" class="card start">
@@ -48,7 +46,7 @@ button{font:inherit;cursor:pointer}
 <div id="choices"></div>
 </section>
 <section id="end" class="card start hidden">
-<div class="art a4">*</div>
+<img class="cert" src="https://i.img402.dev/m9esnyfpzj.jpg" alt="Urkunde">
 <h2 id="en"></h2>
 <p id="es"></p>
 <p id="em"></p>
@@ -56,12 +54,17 @@ button{font:inherit;cursor:pointer}
 </section>
 </div>
 <div class="overlay" id="ov"><div class="modal">
-<div class="art" id="art">*</div>
+<img id="art" alt="Belohnung">
 <h2 id="mt"></h2>
 <p id="mx"></p>
 <p><button class="cta" type="button" onclick="nextQ()">Weiter</button></p>
 </div></div>
 <script>
+var R1="https://i.img402.dev/kgu7brgno6.jpg";
+var R2="https://i.img402.dev/y0664zlr9f.jpg";
+var R3="https://i.img402.dev/4ebanj6he4.jpg";
+var R4="https://i.img402.dev/ef2wemsg9y.jpg";
+var TRY="https://i.img402.dev/a5aydn5f25.jpg";
 var Q=[
 {de:"das Traumhaus",en:"dreamhouse",d:"de"},
 {de:"das Kleid",en:"dress",d:"de"},
@@ -79,7 +82,7 @@ var Q=[
 var EN=["house","shirt","purple","friend","to sing","park","happy","stone","bus","always"];
 var DE=["das Haus","das Hemd","lila","die Freundin","singen","der Park","gluecklich","der Stein","der Bus","immer"];
 var S={i:0,score:0,name:"Star",lock:false,order:[]};
-var ART=[{c:"a1",e:"*",t:"Glitzer-Star!",x:"Richtig!"},{c:"a2",e:"BFF",t:"Beste Freundinnen!",x:"Super gemacht!"},{c:"a3",e:"C",t:"Mode-Moment!",x:"Kleid und Schuhe sitzen."},{c:"a4",e:"P",t:"Pokal-Zeit!",x:"Diese Antwort verdient Gold."}];
+var ART=[{src:R1,t:"Glitzer-Star!",x:"Richtig! Du strahlst wie Bella."},{src:R2,t:"Beste Freundinnen!",x:"Super! Ihr schafft das zusammen."},{src:R4,t:"Mode-Moment!",x:"Kleid, Schuhe, Zauberstab - klasse!"},{src:R3,t:"Pokal-Zeit!",x:"Diese Antwort verdient Gold."}];
 function $(id){return document.getElementById(id)}
 function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function show(id,on){$(id).classList[on?"remove":"add"]("hidden")}
@@ -87,8 +90,8 @@ function startQuiz(){S.name=($("name").value||"").trim()||"Star";S.i=0;S.score=0
 function again(){show("end",0);show("quiz",0);show("start",1)}
 function opts(q){var want=q.d==="de";var right=want?q.en:q.de;var pool=shuf(want?EN:DE).filter(function(x){return x!==right}).slice(0,3);return shuf([right].concat(pool))}
 function draw(){var q=S.order[S.i],n=S.order.length;S.lock=false;$("pt").textContent="Frage "+(S.i+1)+" / "+n;$("sc").textContent=S.score+" *";$("pb").style.width=(S.i/n*100)+"%";$("ql").textContent=q.d==="de"?"Deutsch nach Englisch":"Englisch nach Deutsch";$("qt").innerHTML=q.d==="de"?("Was heisst <b>"+q.de+"</b> auf Englisch?"):("Was heisst <b>"+q.en+"</b> auf Deutsch?");var box=$("choices");box.innerHTML="";opts(q).forEach(function(opt){var b=document.createElement("button");b.type="button";b.className="choice";b.textContent=opt;b.onclick=function(){ans(opt,q)};box.appendChild(b)})}
-function ans(opt,q){if(S.lock)return;S.lock=true;var right=q.d==="de"?q.en:q.de;var bs=document.querySelectorAll(".choice");for(var i=0;i<bs.length;i++){bs[i].disabled=true;if(bs[i].textContent===right)bs[i].classList.add("ok");if(bs[i].textContent===opt&&opt!==right)bs[i].classList.add("bad")}if(opt===right){S.score++;$("sc").textContent=S.score+" *";var a=ART[S.i%4];pop(a.c,a.e,a.t,a.x+" Loesung: "+right)}else pop("a5","!","Fast!","Die Loesung ist: "+right)}
-function pop(c,e,t,x){$("art").className="art "+c;$("art").textContent=e;$("mt").textContent=t;$("mx").textContent=x;$("ov").classList.add("show")}
+function ans(opt,q){if(S.lock)return;S.lock=true;var right=q.d==="de"?q.en:q.de;var bs=document.querySelectorAll(".choice");for(var i=0;i<bs.length;i++){bs[i].disabled=true;if(bs[i].textContent===right)bs[i].classList.add("ok");if(bs[i].textContent===opt&&opt!==right)bs[i].classList.add("bad")}if(opt===right){S.score++;$("sc").textContent=S.score+" *";var a=ART[S.i%4];pop(a.src,a.t,a.x+" Loesung: "+right)}else pop(TRY,"Fast!","Die Loesung ist: "+right)}
+function pop(src,t,x){$("art").src=src;$("mt").textContent=t;$("mx").textContent=x;$("ov").classList.add("show")}
 function nextQ(){$("ov").classList.remove("show");S.i++;if(S.i>=S.order.length)fin();else draw()}
 function fin(){show("quiz",0);show("end",1);$("en").textContent=S.name;$("es").textContent=S.score+" von "+S.order.length+" richtig";$("em").textContent=S.score===S.order.length?"Perfekt! Traumhaus-Star!":(S.score>=9?"Wunderbar!":"Noch eine Runde?")}
 </script>
